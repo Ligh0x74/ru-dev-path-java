@@ -35,7 +35,7 @@ public class MetricDaoRedisZsetImplTest extends JedisDaoTestBase {
     public void generateData() {
         readings = new ArrayList<>();
         ZonedDateTime time = startingDate;
-        for (int i=0; i <  72 * 60; i++) {
+        for (int i = 0; i < 72 * 60; i++) {
             MeterReading reading = new MeterReading();
             reading.setSiteId(siteId);
             reading.setTempC(i * 1.0);
@@ -48,14 +48,12 @@ public class MetricDaoRedisZsetImplTest extends JedisDaoTestBase {
     }
 
     // Challenge #2
-    @Ignore
     @Test
     public void testSmall() {
         testInsertAndRetrieve(1);
     }
 
     // Challenge #2
-    @Ignore
     @Test
     public void testOneDay() {
         testInsertAndRetrieve(60 * 24);
@@ -63,7 +61,6 @@ public class MetricDaoRedisZsetImplTest extends JedisDaoTestBase {
 
 
     // Challenge #2
-    @Ignore
     @Test
     public void testMultipleDays() {
         testInsertAndRetrieve(60 * 70);
@@ -76,7 +73,7 @@ public class MetricDaoRedisZsetImplTest extends JedisDaoTestBase {
         }
 
         List<Measurement> measurements = metricDao.getRecent(siteId, MetricUnit.WHGenerated,
-         startingDate, limit);
+                startingDate, limit);
         assertThat(measurements.size(), is(limit));
         int i = limit;
         for (Measurement measurement : measurements) {

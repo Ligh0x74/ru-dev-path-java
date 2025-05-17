@@ -15,11 +15,10 @@ import java.util.*;
 
 /**
  * Retain metrics using Redis sorted sets.
- *
+ * <p>
  * In this implementation, we use one sorted set per day for
  * up to 'MAX_METRIC_RETENTION_DAYS' days. Old sorted sets are expired
  * after this number of days.
- *
  */
 public class MetricDaoRedisZsetImpl implements MetricDao {
     static private final Integer MAX_METRIC_RETENTION_DAYS = 30;
@@ -51,6 +50,7 @@ public class MetricDaoRedisZsetImpl implements MetricDao {
         // START Challenge #2
         String metricKey = RedisSchema.getDayMetricKey(siteId, unit, dateTime);
         Integer minuteOfDay = getMinuteOfDay(dateTime);
+        jedis.zadd(metricKey, minuteOfDay, new MeasurementMinute(value, minuteOfDay).toString());
         // END Challenge #2
     }
 
@@ -130,10 +130,10 @@ public class MetricDaoRedisZsetImpl implements MetricDao {
 
     private ZonedDateTime getDateFromDayMinute(ZonedDateTime dateTime,
                                                Integer dayMinute) {
-       int minute = dayMinute % 60;
-       int hour = dayMinute / 60;
-       return dateTime.withHour(hour).withMinute(minute).
-               withZoneSameInstant(ZoneOffset.UTC);
+        int minute = dayMinute % 60;
+        int hour = dayMinute / 60;
+        return dateTime.withHour(hour).withMinute(minute).
+                withZoneSameInstant(ZoneOffset.UTC);
     }
 
     // Return the minute of the day. For example:
@@ -148,7 +148,7 @@ public class MetricDaoRedisZsetImpl implements MetricDao {
     /**
      * Utility class to convert between our sorted set members and their
      * constituent measurement and minute values.
-     *
+     * <p>
      * Also rounds decimals before storing them.
      */
     public static class MeasurementMinute {
