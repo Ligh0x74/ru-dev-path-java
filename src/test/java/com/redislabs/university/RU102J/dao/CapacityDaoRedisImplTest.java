@@ -32,7 +32,7 @@ public class CapacityDaoRedisImplTest extends JedisDaoTestBase {
     public void generateData() {
         readings = new ArrayList<>();
         ZonedDateTime time = ZonedDateTime.now(ZoneOffset.UTC);
-        for (int i=0; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             MeterReading reading = new MeterReading((long) i, time, 1.2,
                     (double) i, 22.0);
             readings.add(reading);
@@ -71,7 +71,6 @@ public class CapacityDaoRedisImplTest extends JedisDaoTestBase {
     }
 
     // Challenge #4
-    @Ignore
     @Test
     public void getRank() {
         CapacityDao dao = new CapacityDaoRedisImpl(jedisPool);
